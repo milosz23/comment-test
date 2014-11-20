@@ -1,14 +1,16 @@
 <?php
 
-require 'functions.php';
-$conn = connect_to_db();
+require_once 'functions.php';
+require_once 'vendor/php-activerecord/php-activerecord/ActiveRecord.php';
+
+connect_to_db();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    update_db($conn);
+    update_db();
 }
 
 ?>
-
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class='container'>
         <?php
         //showing comments from DB
-        $results = $conn->query('SELECT * FROM comments_list');
-        foreach ($results as $row) {
-            echo "<div class='name'> <h3>" . $row['name'] . "</h3></div>";
-            echo "<div class='comment'>" . $row['comment'] . "</div>";
+        $comments = get_all_comments();
+        foreach ($comments as $row) {
+            echo "<div class='name'> <h3>" . $row->name . "</h3></div>";
+            echo "<div class='comment'>" . $row->comment . "</div>";
         }
         ?>
     </div>
